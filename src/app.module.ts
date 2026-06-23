@@ -5,7 +5,7 @@ import { LoggerModule } from '@palki/logger';
 import { RedisModule } from '@palki/redis';
 import { DatabaseModule } from '@palki/database';
 import { KafkaConsumerService, KafkaProducerService } from '@palki/messaging';
-import { SignatureVerifierService } from '@palki/messaging';
+import { MessageSignerService, SignatureVerifierService } from '@palki/messaging';
 import { HealthController } from './health.controller';
 import { User } from './entities/user.entity';
 import { UserService } from './services/user.service';
@@ -31,7 +31,7 @@ import * as fs from 'fs';
   ],
   controllers: [HealthController],
   providers: [
-    KafkaConsumerService, KafkaProducerService, SignatureVerifierService,
+    KafkaConsumerService, KafkaProducerService, MessageSignerService, SignatureVerifierService,
     UserService, OtpService, TokenService,
     LoginConsumer, RegisterConsumer, VerifyOtpConsumer,
     RefreshTokenConsumer, LogoutConsumer,
