@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@palki/config';
 import { LoggerModule } from '@palki/logger';
+import { RedisModule } from '@palki/redis';
 import { HealthController } from './health.controller';
 import { LoginConsumer } from './consumers/login.consumer';
 import { RegisterConsumer } from './consumers/register.consumer';
@@ -11,7 +12,7 @@ import { VerifyTokenConsumer } from './consumers/verify-token.consumer';
 import { AuthEventProducer } from './producers/auth-event.producer';
 
 @Module({
-  imports: [ConfigModule, LoggerModule],
+  imports: [ConfigModule, LoggerModule, RedisModule],
   controllers: [HealthController],
   providers: [
     LoginConsumer, RegisterConsumer, VerifyOtpConsumer,
