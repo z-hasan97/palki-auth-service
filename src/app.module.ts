@@ -11,11 +11,14 @@ import { User } from './entities/user.entity';
 import { UserService } from './services/user.service';
 import { OtpService } from './services/otp.service';
 import { TokenService } from './services/token.service';
-import { LoginConsumer } from './consumers/login.consumer';
 import { RegisterConsumer } from './consumers/register.consumer';
 import { VerifyOtpConsumer } from './consumers/verify-otp.consumer';
+import { LoginConsumer } from './consumers/login.consumer';
 import { RefreshTokenConsumer } from './consumers/refresh-token.consumer';
 import { LogoutConsumer } from './consumers/logout.consumer';
+import { SendOtpConsumer } from './consumers/send-otp.consumer';
+import { ForgotPasswordConsumer } from './consumers/forgot-password.consumer';
+import { ResetPasswordConsumer } from './consumers/reset-password.consumer';
 import { AuthEventProducer } from './producers/auth-event.producer';
 import * as fs from 'fs';
 
@@ -33,8 +36,9 @@ import * as fs from 'fs';
   providers: [
     KafkaConsumerService, KafkaProducerService, MessageSignerService, SignatureVerifierService,
     UserService, OtpService, TokenService,
-    LoginConsumer, RegisterConsumer, VerifyOtpConsumer,
+    RegisterConsumer, VerifyOtpConsumer, LoginConsumer,
     RefreshTokenConsumer, LogoutConsumer,
+    SendOtpConsumer, ForgotPasswordConsumer, ResetPasswordConsumer,
     AuthEventProducer,
   ],
 })

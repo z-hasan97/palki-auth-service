@@ -8,6 +8,9 @@ import { VerifyOtpConsumer } from './consumers/verify-otp.consumer';
 import { LoginConsumer } from './consumers/login.consumer';
 import { LogoutConsumer } from './consumers/logout.consumer';
 import { RefreshTokenConsumer } from './consumers/refresh-token.consumer';
+import { SendOtpConsumer } from './consumers/send-otp.consumer';
+import { ForgotPasswordConsumer } from './consumers/forgot-password.consumer';
+import { ResetPasswordConsumer } from './consumers/reset-password.consumer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -18,20 +21,23 @@ async function bootstrap() {
   const consumer = app.get(KafkaConsumerService);
   const producer = app.get(KafkaProducerService);
   const signer = app.get(MessageSignerService);
-  const registerConsumer = app.get(RegisterConsumer);
-  const verifyOtpConsumer = app.get(VerifyOtpConsumer);
-  const loginConsumer = app.get(LoginConsumer);
-  const logoutConsumer = app.get(LogoutConsumer);
-  const refreshConsumer = app.get(RefreshTokenConsumer);
+  const handlers: Record<string, any> = {
+    'auth.register': app.get(RegisterConsumer),
+    'auth.verify-otp': app.get(VerifyOtpConsumer),
+    'auth.login': app.get(LoginConsumer),
+    'auth.logout': app.get(LogoutConsumer),
+    'auth.refresh-token': app.get(RefreshTokenConsumer),
+    'auth.send-otp': app.get(SendOtpConsumer),
+    'auth.forgot-password': app.get(ForgotPasswordConsumer),
+    'auth.reset-password': app.get(ResetPasswordConsumer),
+  };
 
   async function handleAndReply(topic: string, payload: any, handler: any) {
     try {
       const result = await handler.handle(payload.payload || payload);
       const replyEnvelope = signer.sign({
-        status: 'success',
-        data: result,
-        correlationId: payload.correlationId,
-        messageId: payload.messageId,
+        status: 'success', data: result,
+        correlationId: payload.correlationId, messageId: payload.messageId,
         timestamp: new Date().toISOString(),
       });
       await producer.send(topic + '.reply', replyEnvelope as any);
@@ -47,33 +53,13 @@ async function bootstrap() {
 
   await consumer.onModuleInit();
 
-  await consumer.subscribe('auth.register', async (p) => {
-    const msg = JSON.parse(p.message.value?.toString() || '{}');
-    logger.info('Processing auth.register', { messageId: msg.messageId });
-    await handleAndReply('auth.register', msg, registerConsumer);
-  });
-
-  await consumer.subscribe('auth.verify-otp', async (p) => {
-    const msg = JSON.parse(p.message.value?.toString() || '{}');
-    logger.info('Processing auth.verify-otp', { messageId: msg.messageId });
-    await handleAndReply('auth.verify-otp', msg, verifyOtpConsumer);
-  });
-
-  await consumer.subscribe('auth.login', async (p) => {
-    const msg = JSON.parse(p.message.value?.toString() || '{}');
-    logger.info('Processing auth.login', { messageId: msg.messageId });
-    await handleAndReply('auth.login', msg, loginConsumer);
-  });
-
-  await consumer.subscribe('auth.logout', async (p) => {
-    const msg = JSON.parse(p.message.value?.toString() || '{}');
-    await handleAndReply('auth.logout', msg, logoutConsumer);
-  });
-
-  await consumer.subscribe('auth.refresh-token', async (p) => {
-    const msg = JSON.parse(p.message.value?.toString() || '{}');
-    await handleAndReply('auth.refresh-token', msg, refreshConsumer);
-  });
+  for (const [topic, handler] of Object.entries(handlers)) {
+    await consumer.subscribe(topic, async (p) => {
+      const msg = JSON.parse(p.message.value?.toString() || '{}');
+      logger.info('Processing ' + topic, { messageId: msg.messageId });
+      await handleAndReply(topic, msg, handler);
+    });
+  }
 
   await consumer.startConsuming();
   logger.info('Kafka consumers started');
