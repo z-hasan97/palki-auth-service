@@ -1,0 +1,43 @@
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { TokenStoreService } from '@palki/redis';
+import * as crypto from 'crypto';
+import * as fs from 'fs';
+
+@Injectable()
+export class TokenService {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly tokenStore: TokenStoreService,
+  ) {}
+
+  async generateTokens(user: { id: string; roles: string[]; permissions: string[] }, sessionId: string, deviceId: string) {
+    const accessToken = this.jwtService.sign({
+      sub: user.id,
+      sid: sessionId,
+      did: deviceId,
+      rol: user.roles,
+      prm: user.permissions,
+    }, { expiresIn: '1h' });
+
+    const tokenId = crypto.randomBytes(32).toString('hex');
+    const refreshToken = 'rt_' + crypto.randomBytes(48).toString('base64url');
+
+    await this.tokenStore.storeRefreshToken(tokenId, {
+      userId: user.id, sessionId, deviceId,
+      roles: user.roles, permissions: user.permissions,
+    });
+
+    return { accessToken, refreshToken, expiresIn: 3600, tokenId };
+  }
+
+  async refresh(tokenId: string) {
+    const data = await this.tokenStore.getRefreshToken(tokenId);
+    if (!data) throw new Error('Invalid refresh token');
+    return data;
+  }
+
+  async revoke(tokenId: string) {
+    await this.tokenStore.deleteRefreshToken(tokenId);
+  }
+}
