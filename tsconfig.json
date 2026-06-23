@@ -1,81 +1,20 @@
 {
-    "compilerOptions":  {
-                            "module":  "nodenext",
-                            "moduleResolution":  "nodenext",
-                            "resolvePackageJsonExports":  true,
-                            "esModuleInterop":  true,
-                            "isolatedModules":  true,
-                            "declaration":  true,
-                            "removeComments":  true,
-                            "emitDecoratorMetadata":  true,
-                            "experimentalDecorators":  true,
-                            "allowSyntheticDefaultImports":  true,
-                            "target":  "ES2023",
-                            "sourceMap":  true,
-                            "outDir":  "./dist",
-                            "baseUrl":  "./",
-                            "incremental":  true,
-                            "skipLibCheck":  true,
-                            "strictNullChecks":  true,
-                            "forceConsistentCasingInFileNames":  true,
-                            "noImplicitAny":  false,
-                            "strictBindCallApply":  false,
-                            "noFallthroughCasesInSwitch":  false,
-                            "paths":  {
-                                          "@palki/redis/*":  [
-                                                                 "libs/redis/src/*"
-                                                             ],
-                                          "@palki/common/*":  [
-                                                                  "libs/common/src/*"
-                                                              ],
-                                          "@palki/config":  [
-                                                                "libs/config/src"
-                                                            ],
-                                          "@palki/common":  [
-                                                                "libs/common/src"
-                                                            ],
-                                          "@palki/messaging":  [
-                                                                   "libs/messaging/src"
-                                                               ],
-                                          "@palki/observability/*":  [
-                                                                         "libs/observability/src/*"
-                                                                     ],
-                                          "@palki/config/*":  [
-                                                                  "libs/config/src/*"
-                                                              ],
-                                          "@palki/observability":  [
-                                                                       "libs/observability/src"
-                                                                   ],
-                                          "@palki/database/*":  [
-                                                                    "libs/database/src/*"
-                                                                ],
-                                          "@palki/messaging/*":  [
-                                                                     "libs/messaging/src/*"
-                                                                 ],
-                                          "@palki/logger/*":  [
-                                                                  "libs/logger/src/*"
-                                                              ],
-                                          "@palki/contracts/*":  [
-                                                                     "libs/contracts/src/*"
-                                                                 ],
-                                          "@palki/auth":  [
-                                                              "libs/auth/src"
-                                                          ],
-                                          "@palki/redis":  [
-                                                               "libs/redis/src"
-                                                           ],
-                                          "@palki/database":  [
-                                                                  "libs/database/src"
-                                                              ],
-                                          "@palki/auth/*":  [
-                                                                "libs/auth/src/*"
-                                                            ],
-                                          "@palki/logger":  [
-                                                                "libs/logger/src"
-                                                            ],
-                                          "@palki/contracts":  [
-                                                                   "libs/contracts/src"
-                                                               ]
-                                      }
-                        }
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": ["node_modules", "dist"]
 }
