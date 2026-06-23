@@ -11,10 +11,14 @@ export class UserService {
   ) {}
 
   async create(data: { email?: string; phone?: string; password: string; name: string }) {
-    const exists = await this.userRepo.findOne({
-      where: [{ email: data.email }, { phone: data.phone }],
-    });
-    if (exists) throw new ConflictException('User already exists');
+    const where: any[] = [];
+    if (data.email) where.push({ email: data.email });
+    if (data.phone) where.push({ phone: data.phone });
+    
+    if (where.length > 0) {
+      const exists = await this.userRepo.findOne({ where });
+      if (exists) throw new ConflictException('User already exists');
+    }
 
     const passwordHash = await bcrypt.hash(data.password, 12);
     const user = this.userRepo.create({ ...data, passwordHash, state: UserState.PENDING_VERIFICATION });
