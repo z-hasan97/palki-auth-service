@@ -6,6 +6,7 @@ export class RefreshTokenConsumer {
   constructor(private readonly tokenService: TokenService) {}
 
   async handle(payload: any) {
-    return this.tokenService.refresh(payload.tokenId);
+    const data = await this.tokenService.refresh(payload.refreshToken);
+    return { valid: true, ...data };
   }
 }
