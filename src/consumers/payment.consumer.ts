@@ -16,42 +16,27 @@ export class PaymentConsumer {
   ) {}
 
   async handle(payload: any) {
-    const action = payload.action || 'findAll';
+    const data = payload.payload || payload;
+    const action = data.action || 'findAll';
     
     if (action === 'initiate') {
       const payment = this.paymentRepo.create({
-        userId: payload.userId, packageId: payload.packageId,
-        amount: payload.amount, status: PaymentStatus.PENDING,
+        userId: data.userId, packageId: data.packageId,
+        amount: data.amount, status: PaymentStatus.PENDING,
       });
       await this.paymentRepo.save(payment);
       return { paymentId: payment.id, status: 'PENDING', message: 'Payment initiated' };
     }
     
     if (action === 'verify') {
-      await this.paymentRepo.update(payload.paymentId, {
+      await this.paymentRepo.update(data.paymentId, {
         status: PaymentStatus.COMPLETED,
-        transactionId: payload.transactionId || 'txn_' + Date.now(),
-        paymentMethod: payload.paymentMethod || 'sslcommerz',
+        transactionId: data.transactionId || 'txn_' + Date.now(),
+        paymentMethod: data.paymentMethod || 'sslcommerz',
       });
-      
-      const payment = await this.paymentRepo.findOne({ where: { id: payload.paymentId } });
-      if (!payment) return { status: 'COMPLETED', message: 'Payment verified' };
-      
-      const pkg = await this.packageRepo.findOne({ where: { id: payment.packageId } });
-      const startDate = new Date();
-      const endDate = new Date();
-      endDate.setDate(endDate.getDate() + (pkg?.durationDays || 30));
-      
-      await this.clientRepo.save({
-        userId: payment.userId, packageId: payment.packageId,
-        startDate, endDate, status: ClientStatus.ACTIVE,
-      });
-      
-      await this.userRepo.update(payment.userId, { roles: ['CLIENT'] });
-      
-      return { status: 'COMPLETED', message: 'Payment verified, client upgraded' };
+      return { status: 'COMPLETED', message: 'Payment verified' };
     }
     
-    return this.paymentRepo.find({ where: { userId: payload.userId } });
+    return this.paymentRepo.find();
   }
 }
