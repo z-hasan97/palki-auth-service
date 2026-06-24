@@ -16,11 +16,12 @@ import { VerifyOtpConsumer } from './consumers/verify-otp.consumer';
 import { LoginConsumer } from './consumers/login.consumer';
 import { RefreshTokenConsumer } from './consumers/refresh-token.consumer';
 import { LogoutConsumer } from './consumers/logout.consumer';
-import { UserConsumer } from './consumers/user.consumer';
-import { ChangePasswordConsumer } from './consumers/change-password.consumer';
 import { SendOtpConsumer } from './consumers/send-otp.consumer';
 import { ForgotPasswordConsumer } from './consumers/forgot-password.consumer';
 import { ResetPasswordConsumer } from './consumers/reset-password.consumer';
+import { UserConsumer } from './consumers/user.consumer';
+import { ChangePasswordConsumer } from './consumers/change-password.consumer';
+import { ClientConsumer } from './consumers/client.consumer';
 import { AuthEventProducer } from './producers/auth-event.producer';
 import * as fs from 'fs';
 
@@ -41,7 +42,7 @@ import * as fs from 'fs';
     RegisterConsumer, VerifyOtpConsumer, LoginConsumer,
     RefreshTokenConsumer, LogoutConsumer,
     SendOtpConsumer, ForgotPasswordConsumer, ResetPasswordConsumer,
-    UserConsumer, ChangePasswordConsumer,
+    UserConsumer, ChangePasswordConsumer, ClientConsumer,
     AuthEventProducer,
   ],
 })

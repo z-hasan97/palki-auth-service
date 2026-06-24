@@ -13,6 +13,7 @@ import { ForgotPasswordConsumer } from './consumers/forgot-password.consumer';
 import { ResetPasswordConsumer } from './consumers/reset-password.consumer';
 import { UserConsumer } from './consumers/user.consumer';
 import { ChangePasswordConsumer } from './consumers/change-password.consumer';
+import { ClientConsumer } from './consumers/client.consumer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -35,6 +36,15 @@ async function bootstrap() {
     'user.get-profile': app.get(UserConsumer),
     'user.update-profile': app.get(UserConsumer),
     'user.change-password': app.get(ChangePasswordConsumer),
+    'client.create': app.get(ClientConsumer),
+    'client.findAll': app.get(ClientConsumer),
+    'client.findOne': app.get(ClientConsumer),
+    'client.update': app.get(ClientConsumer),
+    'client.delete': app.get(ClientConsumer),
+    'client.getProfile': app.get(ClientConsumer),
+    'client.updateProfile': app.get(ClientConsumer),
+    'client.getServices': app.get(ClientConsumer),
+    'client.addService': app.get(ClientConsumer),
   };
 
   async function handleAndReply(topic: string, payload: any, handler: any) {
