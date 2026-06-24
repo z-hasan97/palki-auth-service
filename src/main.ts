@@ -13,6 +13,7 @@ import { ForgotPasswordConsumer } from './consumers/forgot-password.consumer';
 import { ResetPasswordConsumer } from './consumers/reset-password.consumer';
 import { UserConsumer } from './consumers/user.consumer';
 import { ChangePasswordConsumer } from './consumers/change-password.consumer';
+import { PackageConsumer } from './consumers/package.consumer';
 import { ClientConsumer } from './consumers/client.consumer';
 
 async function bootstrap() {
@@ -45,6 +46,8 @@ async function bootstrap() {
     'client.updateProfile': app.get(ClientConsumer),
     'client.getServices': app.get(ClientConsumer),
     'client.addService': app.get(ClientConsumer),
+    'package.findAll': app.get(PackageConsumer),
+    'package.findOne': app.get(PackageConsumer),
   };
 
   async function handleAndReply(topic: string, payload: any, handler: any) {
