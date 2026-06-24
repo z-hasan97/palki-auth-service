@@ -11,6 +11,8 @@ import { RefreshTokenConsumer } from './consumers/refresh-token.consumer';
 import { SendOtpConsumer } from './consumers/send-otp.consumer';
 import { ForgotPasswordConsumer } from './consumers/forgot-password.consumer';
 import { ResetPasswordConsumer } from './consumers/reset-password.consumer';
+import { UserConsumer } from './consumers/user.consumer';
+import { ChangePasswordConsumer } from './consumers/change-password.consumer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -30,6 +32,9 @@ async function bootstrap() {
     'auth.send-otp': app.get(SendOtpConsumer),
     'auth.forgot-password': app.get(ForgotPasswordConsumer),
     'auth.reset-password': app.get(ResetPasswordConsumer),
+    'user.get-profile': app.get(UserConsumer),
+    'user.update-profile': app.get(UserConsumer),
+    'user.change-password': app.get(ChangePasswordConsumer),
   };
 
   async function handleAndReply(topic: string, payload: any, handler: any) {

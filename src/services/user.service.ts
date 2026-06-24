@@ -35,6 +35,10 @@ export class UserService {
     });
   }
 
+  async updatePassword(id: string, passwordHash: string) {
+    await this.userRepo.update(id, { passwordHash });
+  }
+
   async updateState(id: string, state: UserState) {
     await this.userRepo.update(id, { state });
   }
