@@ -39,6 +39,8 @@ export class UserService {
     await this.userRepo.update(id, { passwordHash });
   }
 
+  async updateProfile(id: string, data: Partial<User>) { await this.userRepo.update(id, data); }
+
   async updateState(id: string, state: UserState) {
     await this.userRepo.update(id, { state });
   }
