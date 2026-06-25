@@ -11,8 +11,6 @@ import { RefreshTokenConsumer } from './consumers/refresh-token.consumer';
 import { SendOtpConsumer } from './consumers/send-otp.consumer';
 import { ForgotPasswordConsumer } from './consumers/forgot-password.consumer';
 import { ResetPasswordConsumer } from './consumers/reset-password.consumer';
-import { PackageConsumer } from './consumers/package.consumer';
-import { PaymentConsumer } from './consumers/payment.consumer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -27,16 +25,14 @@ async function bootstrap() {
     'auth.login': app.get(LoginConsumer), 'auth.logout': app.get(LogoutConsumer),
     'auth.refresh-token': app.get(RefreshTokenConsumer), 'auth.send-otp': app.get(SendOtpConsumer),
     'auth.forgot-password': app.get(ForgotPasswordConsumer), 'auth.reset-password': app.get(ResetPasswordConsumer),
-    'package.findAll': app.get(PackageConsumer), 'package.findOne': app.get(PackageConsumer),
-    'payment.initiate': app.get(PaymentConsumer), 'payment.verify': app.get(PaymentConsumer), 'payment.findAll': app.get(PaymentConsumer),
   };
 
   function mapErrorCode(msg: string): string {
-    const codes: Record<string,string> = { EMAIL_EXISTS: 'AUTH-1005', PHONE_EXISTS: 'AUTH-1006', INVALID_CREDENTIALS: 'AUTH-1001', USER_NOT_FOUND: 'NOT_FOUND-3001', 'Account not active': 'AUTH-1010', 'OTP expired or not found': 'AUTH-1008', 'Invalid code': 'AUTH-1007', 'Max attempts exceeded': 'AUTH-1009', 'PAYMENT_ID_REQUIRED': 'VALIDATION-2001', 'PAYMENT_NOT_FOUND': 'NOT_FOUND-3001' };
+    const codes: Record<string,string> = { EMAIL_EXISTS: 'AUTH-1005', PHONE_EXISTS: 'AUTH-1006', INVALID_CREDENTIALS: 'AUTH-1001', 'Account not active': 'AUTH-1010', 'OTP expired or not found': 'AUTH-1008', 'Invalid code': 'AUTH-1007', 'Max attempts exceeded': 'AUTH-1009' };
     return codes[msg] || 'INTERNAL-5001';
   }
   function mapErrorMessage(msg: string): string {
-    const messages: Record<string,string> = { EMAIL_EXISTS: 'Email already registered', PHONE_EXISTS: 'Phone already registered', INVALID_CREDENTIALS: 'Invalid email or password', USER_NOT_FOUND: 'User not found', 'Account not active': 'Account not verified', 'OTP expired or not found': 'OTP expired. Please request a new one', 'Invalid code': 'Invalid OTP code. Please try again', 'Max attempts exceeded': 'Too many attempts. Please request a new OTP', 'PAYMENT_ID_REQUIRED': 'Payment ID is required', 'PAYMENT_NOT_FOUND': 'Payment not found' };
+    const messages: Record<string,string> = { EMAIL_EXISTS: 'Email already registered', PHONE_EXISTS: 'Phone already registered', INVALID_CREDENTIALS: 'Invalid email or password', 'Account not active': 'Account not verified', 'OTP expired or not found': 'OTP expired. Please request a new one', 'Invalid code': 'Invalid OTP code. Please try again', 'Max attempts exceeded': 'Too many attempts. Please request a new OTP' };
     return messages[msg] || msg;
   }
 
@@ -61,7 +57,7 @@ async function bootstrap() {
     });
   }
   await consumer.startConsuming();
-  logger.info('Kafka consumers started');
+  logger.info('Auth Service consumers started');
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
