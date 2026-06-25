@@ -1,0 +1,12 @@
+  await consumer.onModuleInit();
+
+  for (const [topic, handler] of Object.entries(handlers)) {
+    await consumer.subscribe(topic, async (p) => {
+      const msg = JSON.parse(p.message.value?.toString() || '{}');
+      logger.info('Processing ' + topic, { messageId: msg.messageId, correlationId: msg.correlationId });
+      await handleAndReply(topic, msg, handler);
+    });
+  }
+
+  await consumer.startConsuming();
+  logger.info('Kafka consumers started');

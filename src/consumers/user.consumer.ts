@@ -7,18 +7,16 @@ export class UserConsumer {
 
   async handle(payload: any) {
     const data = payload.payload || payload;
-    const id = data.userId || 'e264955f-7495-4378-8b39-0e3ec4657bce';
+    const id = data.userId || data.sub || data.id;
+    
+    if (!id) throw new Error('USER_NOT_FOUND');
     
     if (data.name || data.email || data.phone) {
-      await this.userService.updateProfile(id, {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-      });
+      await this.userService.updateProfile(id, { name: data.name, email: data.email, phone: data.phone });
     }
     
     const user = await this.userService.findById(id);
-    if (!user) throw new Error('User not found');
+    if (!user) throw new Error('USER_NOT_FOUND');
     return { id: user.id, email: user.email, phone: user.phone, name: user.name, roles: user.roles, state: user.state };
   }
 }
