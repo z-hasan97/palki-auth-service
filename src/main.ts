@@ -11,6 +11,7 @@ import { RefreshTokenConsumer } from './consumers/refresh-token.consumer';
 import { SendOtpConsumer } from './consumers/send-otp.consumer';
 import { ForgotPasswordConsumer } from './consumers/forgot-password.consumer';
 import { ResetPasswordConsumer } from './consumers/reset-password.consumer';
+import { PackageConsumer } from './consumers/package.consumer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -25,6 +26,7 @@ async function bootstrap() {
     'auth.login': app.get(LoginConsumer), 'auth.logout': app.get(LogoutConsumer),
     'auth.refresh-token': app.get(RefreshTokenConsumer), 'auth.send-otp': app.get(SendOtpConsumer),
     'auth.forgot-password': app.get(ForgotPasswordConsumer), 'auth.reset-password': app.get(ResetPasswordConsumer),
+    'package.findAll': app.get(PackageConsumer), 'package.findOne': app.get(PackageConsumer),
   };
 
   function mapErrorCode(msg: string): string {
