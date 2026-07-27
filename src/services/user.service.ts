@@ -19,7 +19,7 @@ export class UserService {
   async findById(id: string) { const u = await this.userRepo.findOne({ where: { id } }); if (!u) throw new NotFoundException('USER_NOT_FOUND'); return u; }
 
   async findByIdentifier(identifier: string) {
-    const u = await this.userRepo.findOne({ where: [{ email: identifier }, { phone: identifier }] });
+    const u = await this.userRepo.findOne({ where: [{ email: identifier }, { phone: identifier }, { id: identifier }] });
     if (!u) throw new UnauthorizedException('INVALID_CREDENTIALS');
     return u;
   }
