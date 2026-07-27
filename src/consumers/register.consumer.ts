@@ -24,7 +24,7 @@ export class RegisterConsumer {
     if (payload.email) data.email = payload.email;
     if (payload.phone || payload.phoneNumber) data.phone = payload.phone || payload.phoneNumber;
 
-    const user = await this.userService.create(data);
+    const user = await this.userService.create({ ...data, lastName: payload.lastName || '' });
     const recipient = payload.email || payload.phone || payload.phoneNumber;
     await this.otpService.generateAndSend(recipient, 'REGISTRATION');
 

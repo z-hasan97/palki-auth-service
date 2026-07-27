@@ -26,7 +26,7 @@ export class LoginConsumer {
     return {
       ...tokens,
       sessionId,
-      user: { id: user.id, email: user.email, phone: user.phone, name: user.name, roles: user.roles },
+      user: { id: user.id, email: user.email, phone: user.phone, name: user.name, roles: user.roles, publicId: user.publicId },
     };
   }
 }
