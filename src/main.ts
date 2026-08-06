@@ -34,7 +34,7 @@ async function bootstrap() {
     return codes[msg] || 'INTERNAL-5001';
   }
   function mapErrorMessage(msg: string): string {
-    const messages: Record<string,string> = { EMAIL_EXISTS: 'Email already registered', PHONE_EXISTS: 'Phone already registered', INVALID_CREDENTIALS: 'Invalid email or password', 'Account not active': 'Account not verified', 'OTP expired or not found': 'OTP expired. Please request a new one', 'Invalid code': 'Invalid OTP code. Please try again', 'Max attempts exceeded': 'Too many attempts. Please request a new OTP' };
+    const messages: Record<string,string> = { EMAIL_EXISTS: 'Email already registered', PHONE_EXISTS: 'Phone already registered', INVALID_CREDENTIALS: 'Invalid email/phone/password combination', 'Account not active': 'Account not verified. Please check your email/phone for OTP', 'OTP expired or not found': 'OTP expired or not found. Please request a new one', 'Invalid code': 'Invalid OTP code. Please try again', 'Max attempts exceeded': 'Too many attempts. Please request a new OTP' };
     return messages[msg] || msg;
   }
 
