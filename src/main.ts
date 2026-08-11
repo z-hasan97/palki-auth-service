@@ -26,7 +26,7 @@ async function bootstrap() {
     'auth.login': app.get(LoginConsumer), 'auth.logout': app.get(LogoutConsumer),
     'auth.refresh-token': app.get(RefreshTokenConsumer), 'auth.send-otp': app.get(SendOtpConsumer),
     'auth.forgot-password': app.get(ForgotPasswordConsumer), 'auth.reset-password': app.get(ResetPasswordConsumer),
-    'package.findAll': app.get(PackageConsumer), 'package.findOne': app.get(PackageConsumer),
+    'package.findAll': app.get(PackageConsumer), 'package.findOne': app.get(PackageConsumer), 'package.create': app.get(PackageConsumer), 'package.update': app.get(PackageConsumer), 'package.delete': app.get(PackageConsumer),
   };
 
   function mapErrorCode(msg: string): string {
